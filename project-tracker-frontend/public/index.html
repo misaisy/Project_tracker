@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Project Tracker Status</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+    .connected { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+  <h1>Project Tracker Status</h1>
+
+  <div id="backend-status">
+    <h2>Backend Connection</h2>
+    <div class="status">Checking...</div>
+  </div>
+
+  <div id="frontend-status">
+    <h2>Frontend Setup</h2>
+    <div class="status connected">Frontend is running!</div>
+  </div>
+
+  <script>
+    fetch('http://localhost:8001/api/projects')
+      .then(response => {
+        const statusDiv = document.querySelector('#backend-status .status');
+        if (response.ok) {
+          statusDiv.textContent = 'Connected to backend successfully!';
+          statusDiv.className = 'status connected';
+        } else {
+          statusDiv.textContent = `Error: ${response.status} ${response.statusText}`;
+          statusDiv.className = 'status error';
+        }
+      })
+      .catch(error => {
+        const statusDiv = document.querySelector('#backend-status .status');
+        statusDiv.textContent = `Connection failed: ${error.message}`;
+        statusDiv.className = 'status error';
+      });
+  </script>
+</body>
+</html>

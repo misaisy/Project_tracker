@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Tracker</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const statusElement = document.getElementById('backend-status');
+
+      fetch('http://localhost:8001/api/projects', {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          statusElement.textContent = 'Connected!';
+          statusElement.style.color = 'green';
+        } else {
+          statusElement.textContent = `Error: ${response.status} ${response.statusText}`;
+          statusElement.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        statusElement.textContent = `Error: ${error.message}`;
+        statusElement.style.color = 'red';
+      });
+    });
+  </script>
+</body>
+</html>
